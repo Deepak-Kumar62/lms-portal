@@ -4,6 +4,7 @@ import About from "./pages/studentPages/About"
 import Contact from "./pages/studentPages/Contact"
 import Dashboard from "./pages/instructorPages/Dashboard"
 import StudentView from "./components/studentComponent/StudentView"
+import CreateNewCourse from "./pages/instructorPages/CreateNewCourse"
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
       </Route>
 
       <Route path="/instructor" element={<Dashboard />} />
-
+      <Route path="/instructor/create-new-course" element={<CreateNewCourse />} />
     </Routes>
   )
 }

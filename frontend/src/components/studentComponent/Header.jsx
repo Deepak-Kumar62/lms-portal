@@ -1,68 +1,118 @@
-import { GraduationCap, TvMinimalPlay } from 'lucide-react';
-import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { GraduationCap, TvMinimalPlay, Menu, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 
 const Header = () => {
-    const navigate = useNavigate()
-
-    // const location = useLocation()
-
-    // const { resetCredentials } = useContext(AuthContext)
-
-    // const handleLogout = () => {
-    //     resetCredentials()
-    //     sessionStorage.clear()
-    // }
+    const navigate = useNavigate();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <header className="flex items-center justify-between p-4 border-b relative">
-            <div className="flex space-x-4 items-center">
-                <Link to="" className="flex items-center hover:text-black mr-20">
-                    <GraduationCap className="h-8 w-8 mr-4" />
-                    <span className="font-extrabold md:text-xl text-[14px]">LMS Learn</span>
-                </Link>
-                <div className="flex items-center space-x-12">
+        <header className="p-4 border-b bg-white shadow-sm relative">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+
+                {/* ================== LEFT LOGO ================== */}
+                <div className="flex items-center">
+                    <Link to="/" className="flex items-center hover:text-black">
+                        <GraduationCap className="h-8 w-8 mr-3" />
+                        <span className="font-extrabold text-lg md:text-xl">LMS Learn</span>
+                    </Link>
+                </div>
+
+                {/* ================== DESKTOP MENU ================== */}
+                <nav className="hidden lg:flex items-center space-x-12 ml-20">
                     <Link
-                        to=""
-                        variant="ghost"
-                        className="text-[14px] md:text-[16px] font-medium hover:text-gray-600"
+                        to="/"
+                        className="text-sm md:text-[16px] font-medium hover:text-gray-600"
                     >
                         Explore Courses
                     </Link>
 
                     <Link
                         to="/about"
-                        variant="ghost"
-                        className="text-[14px] md:text-[16px] font-medium hover:text-gray-600"
+                        className="text-sm md:text-[16px] font-medium hover:text-gray-600"
                     >
                         About Us
                     </Link>
 
                     <Link
                         to="/contact"
-                        variant="ghost"
-                        className="text-[14px] md:text-[16px] font-medium hover:text-gray-600"
+                        className="text-sm md:text-[16px] font-medium hover:text-gray-600"
                     >
                         Contact Us
                     </Link>
-                </div>
-            </div>
+                </nav>
 
-            <div className="flex items-center space-x-4">
-                <div className="flex gap-4 items-center">
+                {/* ================== RIGHT DESKTOP SECTION ================== */}
+                <div className="hidden lg:flex items-center space-x-6">
                     <div
                         onClick={() => navigate("/student-courses")}
-                        className="flex cursor-pointer items-center gap-1"
+                        className="flex cursor-pointer items-center gap-1 hover:text-gray-700"
                     >
-                        <span className="font-extrabold md:text-xl text-[14px]">My Courses</span>
-                        <TvMinimalPlay className="w-8 h-8 cursor-pointer" />
+                        <span className="font-bold md:text-lg">My Courses</span>
+                        <TvMinimalPlay className="h-6 w-6" />
                     </div>
+
                     <Button>Sign Out</Button>
                 </div>
-            </div>
-        </header>
-    )
-}
 
-export default Header
+                {/* ================== MOBILE MENU BUTTON ================== */}
+                <button
+                    className="lg:hidden flex items-center"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
+                    {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                </button>
+            </div>
+
+            {/* ================== MOBILE MENU DROPDOWN ================== */}
+            {isMenuOpen && (
+                <div className="lg:hidden mt-4 bg-white shadow rounded-lg p-4 space-y-4 z-50">
+
+                    <nav className="flex flex-col space-y-4 text-[16px]">
+                        <Link
+                            to="/"
+                            className="hover:text-gray-600"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            Explore Courses
+                        </Link>
+
+                        <Link
+                            to="/about"
+                            className="hover:text-gray-600"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            About Us
+                        </Link>
+
+                        <Link
+                            to="/contact"
+                            className="hover:text-gray-600"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            Contact Us
+                        </Link>
+                    </nav>
+
+                    <div className="border-t pt-4 flex flex-col gap-4">
+                        <div
+                            onClick={() => {
+                                navigate("/student-courses");
+                                setIsMenuOpen(false);
+                            }}
+                            className="flex items-center gap-2 cursor-pointer hover:text-gray-700"
+                        >
+                            <TvMinimalPlay className="h-6 w-6" />
+                            <span className="font-semibold">My Courses</span>
+                        </div>
+
+                        <Button className="w-full">Sign Out</Button>
+                    </div>
+                </div>
+            )}
+        </header>
+    );
+};
+
+export default Header;
