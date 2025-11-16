@@ -2,10 +2,12 @@ import { GraduationCap, TvMinimalPlay, Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
+import { useAuthContext } from '@/contexts/authContext';
 
 const Header = () => {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { user, handleLogout } = useAuthContext()
 
     return (
         <header className="p-4 border-b bg-white shadow-sm relative">
@@ -53,7 +55,12 @@ const Header = () => {
                         <TvMinimalPlay className="h-6 w-6" />
                     </div>
 
-                    <Button>Sign Out</Button>
+                    {!user
+                        ? <Button onClick={() => navigate("/auth")}>Sign In</Button>
+                        : <Button onClick={() => handleLogout()}>Sign Out</Button>
+                    }
+
+
                 </div>
 
                 {/* ================== MOBILE MENU BUTTON ================== */}

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { BarChart, Book, LogOut } from 'lucide-react';
 import { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("Dashboard")
@@ -35,6 +36,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-full min-h-screen bg-gray-100">
+      <ToastContainer position='top-right' autoClose={2000} />
       <aside className="w-64 bg-white shadow-md hidden md:block">
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4">Instructor View</h2>

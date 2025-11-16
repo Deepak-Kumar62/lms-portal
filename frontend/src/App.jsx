@@ -5,10 +5,23 @@ import Contact from "./pages/studentPages/Contact"
 import Dashboard from "./pages/instructorPages/Dashboard"
 import StudentView from "./components/studentComponent/StudentView"
 import CreateNewCourse from "./pages/instructorPages/CreateNewCourse"
+import ProtectedRoute from "./components/ProtectedRoute"
+import PublicRoute from "./components/PublicRoute"
+import AuthPage from "./pages/AuthPage"
 
 function App() {
   return (
     <Routes>
+
+      <Route
+        path="/auth"
+        element={
+          <PublicRoute>
+            <AuthPage />
+          </PublicRoute>
+        }
+      />
+
       <Route path="/" element={<StudentView />}>
         <Route path="" element={<Home />} />
         <Route path="home" element={<Home />} />
@@ -16,8 +29,23 @@ function App() {
         <Route path="contact" element={<Contact />} />
       </Route>
 
-      <Route path="/instructor" element={<Dashboard />} />
-      <Route path="/instructor/create-new-course" element={<CreateNewCourse />} />
+      <Route
+        path="/instructor"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/instructor/create-new-course"
+        element={
+          <ProtectedRoute>
+            <CreateNewCourse />
+          </ProtectedRoute>}
+      />
+      
     </Routes>
   )
 }
