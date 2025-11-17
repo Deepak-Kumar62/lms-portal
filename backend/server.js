@@ -8,6 +8,8 @@ import { connectDatabase } from "./configs/database.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 
 import authRoutes from "./routes/authRoutes/auth.routes.js";
+import instructorCourseRoutes from "./routes/instructorRoutes/course.routes.js";
+import instructorMediaRoutes from "./routes/instructorRoutes/media.routes.js";
 
 const app = express();
 const CLIENT_URL = process.env.CLIENT_URL;
@@ -26,6 +28,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/instructor/course", instructorCourseRoutes);
+app.use("/api/instructor/media", instructorMediaRoutes);
 
 app.use(globalErrorHandler);
 
