@@ -1,6 +1,4 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Slider } from "../ui/slider";
-import { Button } from "../ui/button";
 import {
     Maximize,
     Minimize,
@@ -11,6 +9,8 @@ import {
     Volume2,
     VolumeX,
 } from "lucide-react";
+import { Slider } from "./ui/slider";
+import { Button } from "./ui/button";
 
 const VideoPlayer = ({
     width = "100%",
@@ -131,9 +131,10 @@ const VideoPlayer = ({
     return (
         <div
             ref={playerContainerRef}
-            className={`relative bg-black rounded-lg overflow-hidden shadow-2xl transition-all duration-300 ${isFullScreen ? "w-screen h-screen" : ""
-                }`}
-            style={{ width, height }}
+            className={`relative bg-black rounded-lg overflow-hidden shadow-2xl transition-all duration-300
+    ${isFullScreen ? "w-screen h-screen" : ""}
+  `}
+            style={{ width: "100%", height: "100%" }}
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setShowControls(false)}
         >
@@ -141,53 +142,60 @@ const VideoPlayer = ({
             <video
                 ref={videoRef}
                 src={url}
-                width="100%"
-                height="100%"
+                className="w-full h-full object-contain sm:object-cover"
                 onLoadedMetadata={handleLoadedMetadata}
                 onTimeUpdate={handleTimeUpdate}
                 muted={muted}
-                style={{ objectFit: "cover" }}
             />
 
             {/* --- Controls --- */}
             {showControls && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gray-800 bg-opacity-75 p-4">
+                <div
+                    className="
+        absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-70
+        p-3 sm:p-4 
+        space-y-3
+        backdrop-blur-md
+      "
+                >
                     {/* Progress Slider */}
                     <Slider
                         value={[played * 100]}
                         max={100}
                         step={0.1}
                         onValueChange={handleSeekChange}
-                        className="w-full mb-3"
+                        className="w-full"
                     />
 
-                    <div className="flex items-center justify-between">
+                    <div
+                        className="
+          flex flex-col sm:flex-row
+          items-center justify-between 
+          gap-3 sm:gap-0
+          text-white
+        "
+                    >
                         {/* Left Controls */}
-                        <div className="flex items-center space-x-2">
+                        <div
+                            className="
+            flex items-center 
+            space-x-2 sm:space-x-3
+          "
+                        >
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={handlePlayPause}
-                                className="text-white"
+                                className="text-white scale-110 sm:scale-100"
                             >
                                 {playing ? <Pause /> : <Play />}
                             </Button>
 
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={handleRewind}
-                                className="text-white"
-                            >
+                            <Button variant="ghost" size="icon" onClick={handleRewind} className="text-white">
                                 <RotateCcw />
                             </Button>
 
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={handleForward}
-                                className="text-white"
-                            >
+                            <Button variant="ghost" size="icon" onClick={handleForward} className="text-white">
                                 <RotateCw />
                             </Button>
 
@@ -200,17 +208,20 @@ const VideoPlayer = ({
                                 {muted ? <VolumeX /> : <Volume2 />}
                             </Button>
 
-                            <Slider
-                                value={[volume * 100]}
-                                max={100}
-                                step={1}
-                                onValueChange={handleVolumeChange}
-                                className="w-24"
-                            />
+                            {/* Volume slider – hidden on very small screens */}
+                            <div className="hidden sm:block">
+                                <Slider
+                                    value={[volume * 100]}
+                                    max={100}
+                                    step={1}
+                                    onValueChange={handleVolumeChange}
+                                    className="w-24"
+                                />
+                            </div>
                         </div>
 
                         {/* Right Controls */}
-                        <div className="flex items-center space-x-2 text-white">
+                        <div className="flex items-center space-x-3 sm:space-x-4 text-sm sm:text-base">
                             <span>
                                 {formatTime(played * duration)} / {formatTime(duration)}
                             </span>

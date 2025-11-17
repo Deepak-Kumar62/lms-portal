@@ -8,8 +8,14 @@ const PublicRoute = ({ children }) => {
     if (loading) {
         return <div>Loading</div>
     }
-    
-    return !user ? children : <Navigate to="/" replace />
+
+    if (user) {
+        return user.role === "instructor"
+            ? <Navigate to="/instructor" replace />
+            : <Navigate to="/" replace />
+    }
+
+    return children
 }
 
 export default PublicRoute

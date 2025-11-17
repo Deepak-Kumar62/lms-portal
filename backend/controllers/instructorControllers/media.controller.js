@@ -1,10 +1,9 @@
 import cloudinary from "../../configs/cloudinary.js";
-import { Promise } from "mongoose";
 
 export const uploadMediaToCloudinary = async (req, res, next) => {
   try {
     const result = await cloudinary.uploader.upload(req.file.path, {
-      resource_type: auto,
+      resource_type: "auto",
     });
 
     return res.status(200).json({
