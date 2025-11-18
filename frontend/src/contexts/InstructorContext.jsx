@@ -139,13 +139,25 @@ export const InstructorContextProvider = ({ children }) => {
     async function handleBulkLectureUpload(event) {
         const selectedFiles = Array.from(event.target.files);
 
-        if (!selectedFiles) {
-            toast.error("Please select a file")
-            return
+        console.log(selectedFiles)
+
+        if (selectedFiles.length === 0) {
+            toast.error("Please select at least one file");
+            return;
         }
 
+
         const bulkFormData = new FormData();
-        selectedFiles.forEach((fileItem) => bulkFormData.append("files", fileItem));
+
+        selectedFiles.forEach((fileItem) => {
+            bulkFormData.append("files", fileItem)
+        });
+
+        // To verify:
+        for (let pair of bulkFormData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+
 
         try {
             setMediaUploadProgress(true);

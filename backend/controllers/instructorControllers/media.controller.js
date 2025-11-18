@@ -47,7 +47,9 @@ export const deleteMediaFromCloudinary = async (req, res, next) => {
 export const bulkUploadMediaToCloudinary = async (req, res, next) => {
   try {
     const allPromises = req.files.map(async (fileItem) => {
-      const uploadResult = await cloudinary.uploader.upload(fileItem.path);
+      const uploadResult = await cloudinary.uploader.upload(fileItem.path, {
+        resource_type: "auto",
+      });
 
       // DELETE EACH TEMP FILE
       fs.unlinkSync(fileItem.path);

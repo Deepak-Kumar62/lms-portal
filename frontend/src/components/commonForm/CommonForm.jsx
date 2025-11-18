@@ -16,7 +16,7 @@ function CommonForm({
                 formData={formData}
                 setFormData={setFormData}
             />
-            <Button disabled={isButtonDisabled} type="submit" className='w-full mt-5'>{buttonText || "Submit"}</Button>
+            <Button disabled={isButtonDisabled} type="submit" className='w-full mt-5 cursor-pointer'>{buttonText || "Submit"}</Button>
         </form>
     )
 }

@@ -16,7 +16,7 @@ const InstructorCourses = ({ listOfCourses }) => {
         </CardTitle>
 
         <Button
-          className="w-full sm:w-auto py-5"
+          className="w-full sm:w-auto py-5 cursor-pointer"
           onClick={() => navigate("/instructor/create-new-course")}
         >
           Create New Course
@@ -61,7 +61,7 @@ const InstructorCourses = ({ listOfCourses }) => {
                           size="sm"
                           className="p-1 sm:p-2"
                         >
-                          <Edit className="h-5 w-5 sm:h-6 sm:w-6" />
+                          <Edit className="h-5 w-5 sm:h-6 sm:w-6 cursor-pointer" />
                         </Button>
 
                         <Button
@@ -69,7 +69,7 @@ const InstructorCourses = ({ listOfCourses }) => {
                           size="sm"
                           className="p-1 sm:p-2"
                         >
-                          <Delete className="h-5 w-5 sm:h-6 sm:w-6" />
+                          <Delete className="h-5 w-5 sm:h-6 sm:w-6 cursor-pointer" />
                         </Button>
                       </div>
                     </TableCell>

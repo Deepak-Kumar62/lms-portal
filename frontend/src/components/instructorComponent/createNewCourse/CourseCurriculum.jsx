@@ -12,7 +12,6 @@ import { useRef } from "react";
 const CourseCurriculum = () => {
   const {
     courseCurriculumFormData,
-    setCourseCurriculumFormData,
     handleSingleLectureUpload,
     mediaUploadProgress,
     mediaUploadProgressPercentage,
