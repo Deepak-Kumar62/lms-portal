@@ -2,27 +2,33 @@ import InstructorCourses from '@/components/instructorComponent/dashboard/Instru
 import InstructorDashboard from '@/components/instructorComponent/dashboard/InstructorDashboard';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { useInstructorContext } from '@/contexts/InstructorContext';
+import { fetchAllInstructorCourses } from '@/services/instructorCourseService';
 import { BarChart, Book, LogOut, Menu, ChevronsLeft, ChevronsRight } from 'lucide-react';
-import { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("Dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false); // 👈 NEW
 
+  const { instructorCoursesList, setInstructorCoursesList } = useInstructorContext()
+  const { handleLogout } = useAuthContext()
+
   const menuItems = [
     {
       icon: BarChart,
       label: "Dashboard",
       value: "Dashboard",
-      component: <InstructorDashboard listOfCourses={[]} />,
+      component: <InstructorDashboard listOfCourses={instructorCoursesList} />,
     },
     {
       icon: Book,
       label: "Courses",
       value: "Courses",
-      component: <InstructorCourses listOfCourses={[]} />,
+      component: <InstructorCourses listOfCourses={instructorCoursesList} />,
     },
     {
       icon: LogOut,
@@ -32,9 +38,22 @@ const Dashboard = () => {
     },
   ];
 
-  const handleLogout = () => {
-    console.log("Logout Clicked");
-  };
+  const getAllInstructorCourses = async () => {
+    try {
+      const response = await fetchAllInstructorCourses()
+
+      if (response?.data?.success) {
+        setInstructorCoursesList(response?.data?.data)
+      }
+    } catch (error) {
+      setInstructorCoursesList([])
+      toast.error("Something went wrong while courses downloading")
+    }
+  }
+
+  useEffect(() => {
+    getAllInstructorCourses()
+  }, [])
 
   return (
     <div className="flex h-full min-h-screen bg-gray-100">

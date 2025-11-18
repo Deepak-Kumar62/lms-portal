@@ -4,9 +4,70 @@ import CourseSettings from "@/components/instructorComponent/createNewCourse/Cou
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useInstructorContext } from "@/contexts/InstructorContext";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 const CreateNewCourse = () => {
+    const {
+        handleCreateCourses,
+        courseLandingFormData,
+        courseCurriculumFormData,
+        currentEditedCourseId,
+        setCurrentEditedCourseId,
+        fetchCurrentCourseDetails
+    } = useInstructorContext()
+
+    const params = useParams()
+
+    function isEmpty(value) {
+        if (Array.isArray(value)) {
+            return value.length === 0;
+        }
+        return value === "" || value === null || value === undefined;
+    }
+
+    function validateFormData() {
+        for (const key in courseLandingFormData) {
+            if (isEmpty(courseLandingFormData[key])) {
+                return false;
+            }
+        }
+
+        let hasFreePreview = false;
+
+        for (const item of courseCurriculumFormData) {
+            if (
+                isEmpty(item.title) ||
+                isEmpty(item.videoUrl) ||
+                isEmpty(item.public_id)
+            ) {
+                // console.log(item)
+                return false;
+            }
+
+            if (item.freePreview) {
+                hasFreePreview = true; //found at least one free preview
+            }
+        }
+
+        return hasFreePreview;
+    }
+
+    useEffect(() => {
+        if (params?.courseId) {
+            setCurrentEditedCourseId(params.courseId)
+        }
+    }, [params?.courseId])
+
+    useEffect(() => {
+        if (currentEditedCourseId) {
+            fetchCurrentCourseDetails()
+        }
+    }, [currentEditedCourseId])
+
+
     return (
         <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
             <ToastContainer position="top-right" autoClose={2000} />
@@ -18,7 +79,9 @@ const CreateNewCourse = () => {
                 </h1>
 
                 <Button
+                    disabled={!validateFormData()}
                     className="text-sm tracking-wider font-bold px-6 py-3"
+                    onClick={handleCreateCourses}
                 >
                     SUBMIT
                 </Button>

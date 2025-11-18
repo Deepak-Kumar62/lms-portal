@@ -45,7 +45,15 @@ function App() {
             <CreateNewCourse />
           </ProtectedRoute>}
       />
-      
+
+      <Route
+        path="/instructor/edit-course/:courseId"
+        element={
+          <ProtectedRoute>
+            <CreateNewCourse />
+          </ProtectedRoute>}
+      />
+
     </Routes>
   )
 }

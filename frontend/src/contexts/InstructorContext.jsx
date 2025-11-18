@@ -4,6 +4,7 @@ import { createContext, useContext, useState } from "react"
 import { toast } from "react-toastify"
 import { useAuthContext } from "./AuthContext"
 import { useNavigate } from "react-router-dom"
+import { createCourse, fetchInstructorCourseDetails, updateCourse } from "@/services/instructorCourseService"
 
 const InstructorContext = createContext(null)
 
@@ -31,6 +32,8 @@ export const InstructorContextProvider = ({ children }) => {
     ] = useState(0)
 
     const [currentEditedCourseId, setCurrentEditedCourseId] = useState(null)
+
+    const [instructorCoursesList, setInstructorCoursesList] = useState([])
 
     const handleSingleLectureUpload = async (event, currentIndex) => {
         const selectedFiles = event.target.files[0]
@@ -270,6 +273,25 @@ export const InstructorContextProvider = ({ children }) => {
         }
     }
 
+    async function fetchCurrentCourseDetails() {
+        const response = await fetchInstructorCourseDetails(
+            currentEditedCourseId
+        );
+
+        if (response?.data?.success) {
+            const courseFormData = Object.keys(
+                courseLandingInitialFormData
+            ).reduce((acc, key) => {
+                acc[key] = response?.data?.data[key] || courseLandingInitialFormData[key];
+
+                return acc;
+            }, {});
+
+            setCourseLandingFormData(courseFormData);
+            setCourseCurriculumFormData(response?.data?.data?.curriculum);
+        }
+    }
+
     // console.log(courseCurriculumFormData)
 
     return (
@@ -289,7 +311,12 @@ export const InstructorContextProvider = ({ children }) => {
             handleAddLecture,
             isCourseCurriculumFormDataValid,
             handleImageUpload,
-            handleCreateCourses
+            handleCreateCourses,
+            currentEditedCourseId,
+            setCurrentEditedCourseId,
+            fetchCurrentCourseDetails,
+            instructorCoursesList,
+            setInstructorCoursesList
         }}>
             {children}
         </InstructorContext.Provider>

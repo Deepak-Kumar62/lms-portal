@@ -6,11 +6,29 @@ import { AuthContextProvider } from './contexts/authContext'
 import { InstructorContextProvider } from './contexts/InstructorContext'
 
 createRoot(document.getElementById('root')).render(
-  <InstructorContextProvider>
+
+  <BrowserRouter>
     <AuthContextProvider>
-      <BrowserRouter>
+      <InstructorContextProvider>
         <App />
-      </BrowserRouter>
+      </InstructorContextProvider>
     </AuthContextProvider>
-  </InstructorContextProvider>
+  </BrowserRouter>
 )
+
+
+/**
+ <AuthContextProvider>
+  <InstructorContextProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </InstructorContextProvider>
+</AuthContextProvider>
+    This is WRONG, because both context providers are OUTSIDE <BrowserRouter>, and therefore:
+
+    useNavigate()
+    useLocation()
+    useParams()
+        will NOT work inside your context providers.
+ */

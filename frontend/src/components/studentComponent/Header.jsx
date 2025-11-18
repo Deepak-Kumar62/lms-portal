@@ -114,7 +114,10 @@ const Header = () => {
                             <span className="font-semibold">My Courses</span>
                         </div>
 
-                        <Button className="w-full">Sign Out</Button>
+                        {!user
+                            ? <Button onClick={() => navigate("/auth")}>Sign In</Button>
+                            : <Button onClick={() => handleLogout()}>Sign Out</Button>
+                        }
                     </div>
                 </div>
             )}
