@@ -17,7 +17,9 @@ const CreateNewCourse = () => {
                     Create a New Course
                 </h1>
 
-                <Button className="text-sm tracking-wider font-bold px-6 py-3">
+                <Button
+                    className="text-sm tracking-wider font-bold px-6 py-3"
+                >
                     SUBMIT
                 </Button>
             </div>
@@ -26,7 +28,6 @@ const CreateNewCourse = () => {
             <Card className="shadow-md">
                 <CardContent className="p-3 sm:p-6">
                     <Tabs defaultValue="curriculum" className="space-y-6">
-
                         {/* TAB BUTTONS */}
                         <TabsList className="flex flex-wrap w-full justify-start sm:justify-normal gap-2 sm:gap-4">
                             <TabsTrigger value="curriculum" className="text-sm sm:text-base">

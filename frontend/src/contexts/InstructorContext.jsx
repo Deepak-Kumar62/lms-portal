@@ -2,10 +2,17 @@ import { courseCurriculumInitialFormData, courseLandingInitialFormData } from "@
 import { bulkMediaUpload, mediaDelete, mediaUpload } from "@/services/mediaServices"
 import { createContext, useContext, useState } from "react"
 import { toast } from "react-toastify"
+import { useAuthContext } from "./AuthContext"
+import { useNavigate } from "react-router-dom"
 
 const InstructorContext = createContext(null)
 
 export const InstructorContextProvider = ({ children }) => {
+
+    const { user } = useAuthContext()
+
+    const navigate = useNavigate()
+
     const [
         courseCurriculumFormData,
         setCourseCurriculumFormData
@@ -22,6 +29,8 @@ export const InstructorContextProvider = ({ children }) => {
         mediaUploadProgressPercentage,
         setMediaUploadProgressPercentage
     ] = useState(0)
+
+    const [currentEditedCourseId, setCurrentEditedCourseId] = useState(null)
 
     const handleSingleLectureUpload = async (event, currentIndex) => {
         const selectedFiles = event.target.files[0]
@@ -197,6 +206,70 @@ export const InstructorContextProvider = ({ children }) => {
         });
     }
 
+    const handleImageUpload = async (event) => {
+        const selectedImage = event.target.files[0];
+
+        if (!selectedImage) {
+            toast.error("Please select a file")
+            return
+        }
+
+        const imageFormData = new FormData();
+        imageFormData.append("file", selectedImage);
+
+        try {
+            setMediaUploadProgress(true);
+            const response = await mediaUpload(
+                imageFormData,
+                setMediaUploadProgressPercentage
+            );
+
+            if (response?.data?.success) {
+                setCourseLandingFormData({
+                    ...courseLandingFormData,
+                    image: response.data.data?.url,
+                });
+            }
+            setMediaUploadProgress(false);
+        } catch (error) {
+            console.log(error)
+            setMediaUploadProgressPercentage(0)
+            setMediaUploadProgress(false)
+            toast.error("Something went wrong")
+        }
+    }
+
+    const handleCreateCourses = async () => {
+        try {
+            const finalCourseFormData = {
+                instructorId: user?._id,
+                instructorName: user?.userName,
+                date: new Date(),
+                ...courseLandingFormData,
+                students: [],
+                curriculum: courseCurriculumFormData,
+                isPublised: true,
+            };
+
+            const response =
+                currentEditedCourseId !== null
+                    ? await updateCourse(
+                        currentEditedCourseId,
+                        finalCourseFormData
+                    )
+                    : await createCourse(finalCourseFormData);
+
+            if (response?.data?.success) {
+                setCourseLandingFormData(courseLandingInitialFormData);
+                setCourseCurriculumFormData(courseCurriculumInitialFormData);
+                navigate(-1);
+                setCurrentEditedCourseId(null);
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+    }
+
     // console.log(courseCurriculumFormData)
 
     return (
@@ -214,7 +287,9 @@ export const InstructorContextProvider = ({ children }) => {
             handleLectureDelete,
             handleBulkLectureUpload,
             handleAddLecture,
-            isCourseCurriculumFormDataValid
+            isCourseCurriculumFormDataValid,
+            handleImageUpload,
+            handleCreateCourses
         }}>
             {children}
         </InstructorContext.Provider>

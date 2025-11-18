@@ -67,7 +67,7 @@ const VideoPlayer = ({
         const seekTo = (value[0] / 100) * duration;
         videoRef.current.currentTime = seekTo;
         setPlayed(value[0] / 100);
-    };
+    }; 
 
     // --- Volume ---
     const handleVolumeChange = (value) => {

@@ -1,47 +1,16 @@
+import MediaProgressbar from "@/components/MediaProgressbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useInstructorContext } from "@/contexts/InstructorContext";
-import MediaProgressbar from "@/components/MediaProgressbar";
 
 const CourseSettings = () => {
   const {
     courseLandingFormData,
-    setCourseLandingFormData,
     mediaUploadProgress,
     mediaUploadProgressPercentage,
-    setMediaUploadProgress,
-    setMediaUploadProgressPercentage,
-    mediaUploadService
+    handleImageUpload
   } = useInstructorContext();
-
-  async function handleImageUploadChange(event) {
-    const selectedImage = event.target.files[0];
-
-    if (selectedImage) {
-      const imageFormData = new FormData();
-      imageFormData.append("file", selectedImage);
-
-      try {
-        setMediaUploadProgress(true);
-        const response = await mediaUploadService(
-          imageFormData,
-          setMediaUploadProgressPercentage
-        );
-
-        if (response.success) {
-          setCourseLandingFormData({
-            ...courseLandingFormData,
-            image: response.data.url,
-          });
-        }
-
-        setMediaUploadProgress(false);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }
 
   return (
     <Card className="w-full shadow-md">
@@ -81,7 +50,7 @@ const CourseSettings = () => {
               className="cursor-pointer text-sm sm:text-base"
               type="file"
               accept="image/*"
-              onChange={handleImageUploadChange}
+              onChange={handleImageUpload}
             />
           </div>
         )}
