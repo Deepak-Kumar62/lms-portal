@@ -44,8 +44,6 @@ export const getCoursesForStudent = async (req, res, next) => {
 
     const coursesList = await Course.find(filters).sort(sortParam);
 
-    console.log(coursesList)
-
     if (!coursesList) {
       return res.status(400).json({
         success: false,
@@ -76,7 +74,7 @@ export const getCourseDetails = async (req, res, next) => {
       });
     }
 
-    return res.status(2000).json({
+    return res.status(200).json({
       success: true,
       message: "Course  found successfully",
       data: course,
