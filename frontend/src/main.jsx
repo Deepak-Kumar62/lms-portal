@@ -4,14 +4,17 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthContextProvider } from './contexts/authContext'
 import { InstructorContextProvider } from './contexts/InstructorContext'
+import { StudentContextProvider } from './contexts/StudentContext'
 
 createRoot(document.getElementById('root')).render(
 
   <BrowserRouter>
     <AuthContextProvider>
-      <InstructorContextProvider>
-        <App />
-      </InstructorContextProvider>
+      <StudentContextProvider>
+        <InstructorContextProvider>
+          <App />
+        </InstructorContextProvider>
+      </StudentContextProvider>
     </AuthContextProvider>
   </BrowserRouter>
 )

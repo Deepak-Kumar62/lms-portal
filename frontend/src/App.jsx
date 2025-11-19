@@ -8,6 +8,9 @@ import CreateNewCourse from "./pages/instructorPages/CreateNewCourse"
 import ProtectedRoute from "./components/ProtectedRoute"
 import PublicRoute from "./components/PublicRoute"
 import AuthPage from "./pages/AuthPage"
+import ExploreCourses from "./pages/studentPages/ExploreCourses"
+import MyCourses from "./pages/studentPages/MyCourses"
+import CourseDetails from "./pages/studentPages/CourseDetails"
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
         <Route path="home" element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="explore-courses" element={<ExploreCourses />} />
+        <Route path="my-courses" element={<MyCourses />} />
+        <Route path="course/:courseId" element={<CourseDetails />} />
       </Route>
 
       <Route

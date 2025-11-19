@@ -10,6 +10,7 @@ import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import authRoutes from "./routes/authRoutes/auth.routes.js";
 import instructorCourseRoutes from "./routes/instructorRoutes/course.routes.js";
 import instructorMediaRoutes from "./routes/instructorRoutes/media.routes.js";
+import studentCourseRoutes from "./routes/studentRoutes/course.routes.js";
 
 const app = express();
 const CLIENT_URL = process.env.CLIENT_URL;
@@ -30,6 +31,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/instructor/course", instructorCourseRoutes);
 app.use("/api/instructor/media", instructorMediaRoutes);
+app.use("/api/student/course", studentCourseRoutes);
 
 app.use(globalErrorHandler);
 

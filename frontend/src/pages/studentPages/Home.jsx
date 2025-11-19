@@ -1,14 +1,40 @@
 import { Button } from '@/components/ui/button'
 import { courseCategories } from '@/config'
 import banner from "../../assets/banner-img.png"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { fetchAllCoursesForStudent } from '@/services/stdentService'
 
 const Home = () => {
     const [studentViewCoursesList, setStudentViewCoursesList] = useState([])
 
-    const handleNavigateToCoursesPage = (id) => {
-        console.log("Navigate to courses page →", id)
+    const navigate = useNavigate()
+
+    const handleNavigateToCoursesExplorePage = (categoryItemId) => {
+        sessionStorage.removeItem("filters")
+        sessionStorage.setItem("filters", JSON.stringify({ category: [categoryItemId] }))
+        navigate("/explore-courses")
     }
+
+    const fetchAllCourses = async () => {
+        try {
+            const response = await fetchAllCoursesForStudent()
+
+            if (response?.data?.success) {
+                setStudentViewCoursesList(response?.data?.data)
+            }
+        } catch (error) {
+            setStudentViewCoursesList([])
+        }
+    }
+
+    const handleCourseNavigate = (courseId) => {
+        navigate(`/course/${courseId}`)
+    }
+
+    useEffect(() => {
+        fetchAllCourses()
+    }, [])
 
     return (
         <main className="min-h-screen bg-white flex flex-col">
@@ -18,7 +44,7 @@ const Home = () => {
 
                 {/* TEXT BOX */}
                 <div className="w-full lg:w-1/2 text-center lg:text-left space-y-4">
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-purple-700">
                         Learning that gets you
                     </h1>
                     <p className="text-lg sm:text-xl text-gray-700">
@@ -50,7 +76,7 @@ const Home = () => {
                         <Button
                             key={categoryItem.id}
                             variant="outline"
-                            onClick={() => handleNavigateToCoursesPage(categoryItem.id)}
+                            onClick={() => handleNavigateToCoursesExplorePage(categoryItem.id)}
                             className="w-full justify-center sm:justify-start text-xs sm:text-sm md:text-[15px] font-medium py-2 sm:py-3 whitespace-normal wrap-break-words"
                         >
                             {categoryItem.label}
@@ -72,6 +98,7 @@ const Home = () => {
                             <div
                                 key={courseItem._id}
                                 className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer"
+                                onClick={() => handleCourseNavigate(courseItem._id)}
                             >
                                 <img
                                     src={courseItem?.image}

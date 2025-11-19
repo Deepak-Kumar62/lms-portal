@@ -139,7 +139,7 @@ export const InstructorContextProvider = ({ children }) => {
     async function handleBulkLectureUpload(event) {
         const selectedFiles = Array.from(event.target.files);
 
-        console.log(selectedFiles)
+        // console.log(selectedFiles)
 
         if (selectedFiles.length === 0) {
             toast.error("Please select at least one file");
@@ -154,9 +154,9 @@ export const InstructorContextProvider = ({ children }) => {
         });
 
         // To verify:
-        for (let pair of bulkFormData.entries()) {
-            console.log(pair[0], pair[1]);
-        }
+        // for (let pair of bulkFormData.entries()) {
+        //     console.log(pair[0], pair[1]);
+        // }
 
 
         try {
