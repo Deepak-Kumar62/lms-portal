@@ -98,11 +98,11 @@ const Header = () => {
                     <nav className="flex flex-col space-y-4 text-[16px]">
                         <Link
                             to="/home"
-                            className="text-sm md:text-[16px] font-medium hover:text-gray-600"
+                            className="md:text-[16px] font-medium hover:text-gray-600"
                         >
                             Home
                         </Link>
-                        
+
                         <Link
                             to="/explore-courses"
                             className="hover:text-gray-600"
