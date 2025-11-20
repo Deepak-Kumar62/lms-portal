@@ -11,6 +11,9 @@ import AuthPage from "./pages/AuthPage"
 import ExploreCourses from "./pages/studentPages/ExploreCourses"
 import MyCourses from "./pages/studentPages/MyCourses"
 import CourseDetails from "./pages/studentPages/CourseDetails"
+import CapturePaymentAndFinalize from "./pages/studentPages/CapturePaymentAndFinalize"
+import PaymentCancel from "./pages/studentPages/PaymentCancel"
+import CourseProgress from "./pages/studentPages/CourseProgress"
 
 function App() {
   return (
@@ -31,8 +34,39 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="explore-courses" element={<ExploreCourses />} />
-        <Route path="my-courses" element={<MyCourses />} />
         <Route path="course/:courseId" element={<CourseDetails />} />
+        <Route
+          path="my-courses"
+          element={
+            <ProtectedRoute>
+              <MyCourses />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="payment-return"
+          element={
+            <ProtectedRoute>
+              <CapturePaymentAndFinalize />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="payment-cancel"
+          element={
+            <ProtectedRoute>
+              <PaymentCancel />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="course-progress/:courseId"
+          element={
+            <ProtectedRoute>
+              <CourseProgress />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       <Route

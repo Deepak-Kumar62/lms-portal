@@ -1,4 +1,5 @@
 import Course from "../../models/course.model.js";
+import StudentCourses from "../../models/studentCourse.model.js";
 
 export const getCoursesForStudent = async (req, res, next) => {
   try {
@@ -78,6 +79,42 @@ export const getCourseDetails = async (req, res, next) => {
       success: true,
       message: "Course  found successfully",
       data: course,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkCourseBought = async (req, res, next) => {
+  try {
+    const { studentId, courseId } = req.params;
+
+    const studentCourses = await StudentCourses.findOne({ userId: studentId });
+
+    if (!studentCourses) {
+      return res.status(400).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    const isCourseBought =
+      studentCourses?.courses.findIndex(
+        (course) => course.courseId === courseId
+      ) > -1;
+
+    if (isCourseBought) {
+      return res.status(200).json({
+        success: true,
+        message: "Student has bought the course",
+        data: isCourseBought,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Student has not bought the course",
+      data: false,
     });
   } catch (error) {
     next(error);

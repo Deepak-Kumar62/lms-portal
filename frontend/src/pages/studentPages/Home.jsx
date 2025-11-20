@@ -3,12 +3,15 @@ import { courseCategories } from '@/config'
 import banner from "../../assets/banner-img.png"
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchAllCoursesForStudent } from '@/services/stdentService'
+import { fetchAllCoursesForStudent, fetchIsCourseBought } from '@/services/stdentService'
+import { useAuthContext } from '@/contexts/AuthContext'
 
 const Home = () => {
     const [studentViewCoursesList, setStudentViewCoursesList] = useState([])
 
     const navigate = useNavigate()
+
+    const { user } = useAuthContext()
 
     const handleNavigateToCoursesExplorePage = (categoryItemId) => {
         sessionStorage.removeItem("filters")
@@ -28,8 +31,24 @@ const Home = () => {
         }
     }
 
-    const handleCourseNavigate = (courseId) => {
-        navigate(`/course/${courseId}`)
+    const handleCourseNavigate = async (courseId) => {
+        if (!user) {
+            return navigate(`/course/${courseId}`)
+        }
+
+        try {
+            const response = await fetchIsCourseBought(user._id, courseId)
+
+            if (response?.data?.success) {
+                if (response?.data?.data) {
+                    navigate(`/course-progress/${courseId}`)
+                } else {
+                    navigate(`/course/${courseId}`)
+                }
+            }
+        } catch (error) {
+
+        }
     }
 
     useEffect(() => {

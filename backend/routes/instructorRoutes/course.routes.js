@@ -14,4 +14,5 @@ router.get("/", verifyAuth, getAllCourses);
 router.get("/:courseId", verifyAuth, getCourse);
 router.put("/:courseId", verifyAuth, updateCourse);
 
+
 export default router;

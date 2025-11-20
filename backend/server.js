@@ -11,6 +11,9 @@ import authRoutes from "./routes/authRoutes/auth.routes.js";
 import instructorCourseRoutes from "./routes/instructorRoutes/course.routes.js";
 import instructorMediaRoutes from "./routes/instructorRoutes/media.routes.js";
 import studentCourseRoutes from "./routes/studentRoutes/course.routes.js";
+import studentOrderRoutes from "./routes/studentRoutes/order.routes.js";
+import studentBoughtCoursesRoutes from "./routes/studentRoutes/studentCourses.routes.js";
+import studentCourseProgressRoutes from "./routes/studentRoutes/courseProgress.routes.js";
 
 const app = express();
 const CLIENT_URL = process.env.CLIENT_URL;
@@ -32,6 +35,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/instructor/course", instructorCourseRoutes);
 app.use("/api/instructor/media", instructorMediaRoutes);
 app.use("/api/student/course", studentCourseRoutes);
+app.use("/api/student/order", studentOrderRoutes);
+app.use("/api/student/bought-course", studentBoughtCoursesRoutes);
+app.use("/api/student/course-progress", studentCourseProgressRoutes);
 
 app.use(globalErrorHandler);
 

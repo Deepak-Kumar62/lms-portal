@@ -8,6 +8,8 @@ export const fetchCourseDetails = async (courseId) => {
   return await axiosInstance.get(`/student/course/${courseId}`);
 };
 
-export const fetchByedCoursesByStudent = async () => {};
-
-export const fetchStudentCourseProgress = async () => {};
+export const fetchIsCourseBought = async (studentId, courseId) => {
+  return await axiosInstance.get(
+    `/student/course/purchase-info/${studentId}/${courseId}`
+  );
+};

@@ -54,17 +54,28 @@ const Header = () => {
 
                 {/* ================== RIGHT DESKTOP SECTION ================== */}
                 <div className="hidden lg:flex items-center space-x-6">
-                    <div
-                        onClick={() => navigate("/my-courses")}
-                        className="flex cursor-pointer items-center gap-1 hover:text-gray-700"
-                    >
-                        <span className="font-semibold md:text-lg">My Courses</span>
-                        <TvMinimalPlay className="h-6 w-6" />
-                    </div>
+                    {user
+                        ? <div
+                            onClick={() => {
+                                navigate("/my-courses");
+                                setIsMenuOpen(false);
+                            }}
+                            className="flex items-center gap-2 cursor-pointer hover:text-gray-700"
+                        >
+                            <TvMinimalPlay className="h-6 w-6" />
+                            <span className="font-semibold">My Courses</span>
+                        </div>
+                        : null
+                    }
 
                     {!user
                         ? <Button onClick={() => navigate("/auth")}>Sign In</Button>
-                        : <Button onClick={() => handleLogout()}>Sign Out</Button>
+                        : <Button
+                            onClick={() => {
+                                handleLogout()
+                                navigate("/home")
+                            }}
+                        >Sign Out</Button>
                     }
 
 
@@ -110,20 +121,28 @@ const Header = () => {
                     </nav>
 
                     <div className="border-t pt-4 flex flex-col gap-4">
-                        <div
-                            onClick={() => {
-                                navigate("/my-courses");
-                                setIsMenuOpen(false);
-                            }}
-                            className="flex items-center gap-2 cursor-pointer hover:text-gray-700"
-                        >
-                            <TvMinimalPlay className="h-6 w-6" />
-                            <span className="font-semibold">My Courses</span>
-                        </div>
+                        {user
+                            ? <div
+                                onClick={() => {
+                                    navigate("/my-courses");
+                                    setIsMenuOpen(false);
+                                }}
+                                className="flex items-center gap-2 cursor-pointer hover:text-gray-700"
+                            >
+                                <TvMinimalPlay className="h-6 w-6" />
+                                <span className="font-semibold">My Courses</span>
+                            </div>
+                            : null
+                        }
 
                         {!user
                             ? <Button onClick={() => navigate("/auth")}>Sign In</Button>
-                            : <Button onClick={() => handleLogout()}>Sign Out</Button>
+                            : <Button
+                                onClick={() => {
+                                    handleLogout()
+                                    navigate("/home")
+                                }}
+                            >Sign Out</Button>
                         }
                     </div>
                 </div>

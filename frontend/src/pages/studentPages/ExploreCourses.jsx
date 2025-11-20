@@ -21,8 +21,9 @@ import {
 import { filterOptions, sortOptions } from "@/config";
 import { ArrowUpDownIcon, FilterIcon, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { fetchAllCoursesForStudent } from "@/services/stdentService";
+import { fetchAllCoursesForStudent, fetchIsCourseBought } from "@/services/stdentService";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 const ExploreCourses = () => {
     const [studentViewCoursesList, setStudentViewCoursesList] = useState([])
@@ -37,6 +38,8 @@ const ExploreCourses = () => {
     const [loadingState, setLoadingState] = useState(false);
 
     const navigate = useNavigate()
+
+    const { user } = useAuthContext()
 
     const handleFilterChange = (sectionId, currentOption) => {
         let filtersCopy = { ...filters }
@@ -104,8 +107,25 @@ const ExploreCourses = () => {
         return queryParams.join("&")
     }
 
-    const handleCourseNavigate = (courseId) => {
-        navigate(`/course/${courseId}`)
+    const handleCourseNavigate = async (courseId) => {
+
+        if (!user) {
+            return navigate(`/course/${courseId}`)
+        }
+
+        try {
+            const response = await fetchIsCourseBought(user._id, courseId)
+
+            if (response?.data?.success) {
+                if (response?.data?.data) {
+                    navigate(`/course-progress/${courseId}`)
+                } else {
+                    navigate(`/course/${courseId}`)
+                }
+            }
+        } catch (error) {
+
+        }
     }
 
     useEffect(() => {

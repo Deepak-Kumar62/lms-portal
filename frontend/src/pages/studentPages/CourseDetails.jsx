@@ -2,18 +2,28 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import VideoPlayer from '@/components/VideoPlayer';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { createOrder } from '@/services/orderService';
 import { fetchCourseDetails } from '@/services/stdentService';
 import { CheckCircle, Globe, Lock, PlayCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const CourseDetails = () => {
   const [studentViewCourseDetails, setStudentViewCourseDetails] = useState({})
   const [loading, setLoading] = useState(true)
   const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false)
   const [currentFreePreviewVideoUrl, setCurrentFreePreviewVideoUrl] = useState(null)
+  const [approvalUrl, setApprovalUrl] = useState(null)
 
+  const { user } = useAuthContext()
   const { courseId } = useParams()
+  const navigate = useNavigate()
+
+  if (approvalUrl !== null) {
+    window.location.href = approvalUrl;
+  }
 
   const indexOfFreePreviewUrl = studentViewCourseDetails ?
     (studentViewCourseDetails?.curriculum?.findIndex((curriculumVideo) => curriculumVideo.freePreview))
@@ -40,11 +50,55 @@ const CourseDetails = () => {
     }
   }
 
+  const handleCreateOrder = async () => {
+
+    if (!user) {
+      return navigate("/auth")
+    }
+
+    try {
+      const orderPayload = {
+        userId: user?._id,
+        userName: user?.userName,
+        userEmail: user?.userEmail,
+        orderStatus: "pending",
+        paymentMethod: "paypal",
+        paymentStatus: "initiated",
+        orderDate: new Date(),
+        paymentId: "",
+        payerId: "",
+        instructorId: studentViewCourseDetails?.instructorId,
+        instructorName: studentViewCourseDetails?.instructorName,
+        courseImage: studentViewCourseDetails?.image,
+        courseTitle: studentViewCourseDetails?.title,
+        courseId: studentViewCourseDetails?._id,
+        coursePricing: studentViewCourseDetails?.pricing,
+      };
+
+
+      const response = await createOrder(orderPayload)
+
+      if (response?.data?.success) {
+        sessionStorage.setItem(
+          "currentOrderId",
+          JSON.stringify(response?.data?.data?.orderId)
+        );
+        setApprovalUrl(response?.data?.data?.approveUrl);
+      }
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
+  }
+
+
+
   useEffect(() => {
     if (courseId) {
       handleFetchCourse()
     }
   }, [courseId])
+
+
 
   if (loading) {
     return <div className='text-2xl text-center p-5'>Loading....</div>
@@ -154,8 +208,8 @@ const CourseDetails = () => {
                 </span>
               </div>
               <Button
-                // onClick={handleCreatePayment}
-                className="w-full">
+                onClick={handleCreateOrder}
+                className="w-full cursor-pointer">
                 Buy Now
               </Button>
             </CardContent>

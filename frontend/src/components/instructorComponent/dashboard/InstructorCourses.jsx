@@ -59,17 +59,17 @@ const InstructorCourses = ({ listOfCourses }) => {
                           }
                           variant="ghost"
                           size="sm"
-                          className="p-1 sm:p-2"
+                          className="p-1 sm:p-2 cursor-pointer"
                         >
-                          <Edit className="h-5 w-5 sm:h-6 sm:w-6 cursor-pointer" />
+                          <Edit className="h-5 w-5 sm:h-6 sm:w-6 " />
                         </Button>
 
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="p-1 sm:p-2"
+                          className="p-1 sm:p-2  cursor-pointer"
                         >
-                          <Delete className="h-5 w-5 sm:h-6 sm:w-6 cursor-pointer" />
+                          <Delete className="h-5 w-5 sm:h-6 sm:w-6" />
                         </Button>
                       </div>
                     </TableCell>
