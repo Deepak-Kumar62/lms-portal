@@ -3,7 +3,7 @@ import CommonForm from "@/components/commonForm/CommonForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControl, signUpFormControl } from "@/config";
-import { useAuthContext } from "@/contexts/authContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 import { GraduationCap } from "lucide-react";
 import { useState } from "react";

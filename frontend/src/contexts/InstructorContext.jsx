@@ -2,9 +2,9 @@ import { courseCurriculumInitialFormData, courseLandingInitialFormData } from "@
 import { bulkMediaUpload, mediaDelete, mediaUpload } from "@/services/mediaServices"
 import { createContext, useContext, useState } from "react"
 import { toast } from "react-toastify"
-import { useAuthContext } from "./AuthContext"
 import { useNavigate } from "react-router-dom"
 import { createCourse, fetchInstructorCourseDetails, updateCourse } from "@/services/instructorCourseService"
+import { useAuthContext } from "./AuthContext"
 
 const InstructorContext = createContext(null)
 

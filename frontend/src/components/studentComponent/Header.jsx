@@ -2,7 +2,8 @@ import { GraduationCap, TvMinimalPlay, Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
-import { useAuthContext } from '@/contexts/authContext';
+import { useAuthContext } from '@/contexts/AuthContext';
+
 
 const Header = () => {
     const navigate = useNavigate();
