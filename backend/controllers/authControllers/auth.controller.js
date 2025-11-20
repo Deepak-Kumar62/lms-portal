@@ -107,7 +107,7 @@ export const loginUser = async (req, res, next) => {
     const cookieOptions = {
       httpOnly: true, // prevents access via JS (XSS protection)
       secure: process.env.NODE_ENV === "production", // true on HTTPS
-      sameSite: "strict", // CSRF protection
+      sameSite: "none", // for two different origin 
       maxAge: 2 * 60 * 60 * 1000, // 2 hours
     };
 
