@@ -14,10 +14,13 @@ import CourseDetails from "./pages/studentPages/CourseDetails"
 import CapturePaymentAndFinalize from "./pages/studentPages/CapturePaymentAndFinalize"
 import PaymentCancel from "./pages/studentPages/PaymentCancel"
 import CourseProgress from "./pages/studentPages/CourseProgress"
+import PageNotFound from "./pages/PageNotFound"
 
 function App() {
   return (
     <Routes>
+
+      <Route path="*" element={<PageNotFound />} />
 
       <Route
         path="/auth"

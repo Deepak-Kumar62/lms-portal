@@ -6,7 +6,7 @@ const PublicRoute = ({ children }) => {
     const { user, loading } = useAuthContext()
 
     if (loading) {
-        return <div>Loading</div>
+        return <div className='text-center mt-5 text-2xl min-h-screen'>Loading</div>
     }
 
     if (user) {

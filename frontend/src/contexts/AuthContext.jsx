@@ -25,33 +25,45 @@ export const AuthContextProvider = ({ children }) => {
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             const res = await loginUser(signInFormData)
             setUser(res?.data?.data?.user)
             toast.success(res?.data?.message)
         } catch (error) {
             setUser(null)
             toast.error(error?.response?.data?.message || "Something went wrong")
+        } finally {
+            setSignInFormData(initialSignInFormData)
+            setLoading(false)
         }
     }
 
     const handleRegister = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             const res = await registerUser(signUpFormData)
             toast.success(res?.data?.message)
+            setSignUpFormData(initialSignUpFormData)
         } catch (error) {
             toast.error(error?.response?.data?.message || "Something went wrong")
+        } finally {
+            setSignUpFormData(initialSignUpFormData)
+            setLoading(false)
         }
     }
 
     const handleLogout = async () => {
         try {
+            setLoading(true)
             const res = await logoutUser()
             setUser(null)
             toast.success(res?.data?.data?.message)
         } catch (error) {
             console.log(error)
             toast.error(error?.response?.data?.message || "Something went wrong")
+        } finally {
+            setLoading(false)
         }
     }
 
